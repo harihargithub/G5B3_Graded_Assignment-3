@@ -1,0 +1,58 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet"
+        href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css">
+    <title>Ticket Details</title>
+</head>
+
+<body>
+    <div class="container">
+        <h3>Ticket Details</h3>
+        <hr>
+        <p class="h4 mb-4" th:text="${ticket.title}"></p>
+        <p th:text="${ticket.description}"></p>
+        <p th:text="${ticket.createdOn}"></p>
+
+        <hr>
+        <h5>Comments</h5>
+        <!-- Add comment form -->
+       <form id="commentForm" th:action="@{/tickets/{id}/comments/saveFromForm(id=${ticket.id})}" method="POST">
+    <input type="text" id="commentText" class="form-control mb-4" placeholder="Add a comment" required>
+    <button type="submit" class="btn btn-info">Add Comment</button>
+</form>
+
+
+
+        <hr>
+        <h5>Comments</h5>
+        <div class="mb-4">
+            <!-- Display comments -->
+            <div th:each="comment : ${ticket.comments}">
+                <div>
+                    <p th:text="${comment.text}"></p>
+                    <p th:text="${comment.timestamp}"></p>
+                </div>
+                <hr>
+            </div>
+        </div>
+
+        <hr>
+        <a th:href="@{/tickets/list}">Back to Tickets List</a>
+    </div>
+
+   <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var form = document.getElementById('commentForm');
+        var ticketId = form.getAttribute('data-ticket-id');
+        form.action = '/tickets/' + encodeURIComponent(ticketId) + '/comments/save';
+    });
+</script>
+</body>
+
+</html>
